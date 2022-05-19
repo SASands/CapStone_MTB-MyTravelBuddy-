@@ -10,6 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id","first_name", "last_name", "country", "user_since"]
 
+# class FriendsSerializer(serializers.ModelSerializer):
+#     # friend =
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -21,6 +24,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token["username"] = user.username
         token["first_name"] = user.first_name
+        token["country"] = user.country
+        token["user_since"] = user.user_since
 
         return token
 
@@ -37,7 +42,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         # If added new columns through the User model, add them in the fields
         # list as seen below
         fields = ('username', 'password', 'email',
-                  'first_name', 'last_name',)
+                  'first_name', 'last_name', 'country')
 
     def create(self, validated_data):
 

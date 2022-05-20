@@ -1,17 +1,21 @@
 from dataclasses import fields
+from pyexpat import model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
+from Friends.models import Friends
+from Posts.models import Posts
 from .models import User
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id","first_name", "last_name", "country", "user_since"]
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ["id","first_name", "last_name", "country", "user_since"]
 
-# class FriendsSerializer(serializers.ModelSerializer):
-#     # friend =
+
+
+
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -26,7 +30,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["first_name"] = user.first_name
         token["country"] = user.country
         token["user_since"] = user.user_since
-
         return token
 
 
@@ -51,7 +54,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-
+            country=validated_data['country'],
             # If added new columns through the User model, add them in this
             # create method. Example below:
 

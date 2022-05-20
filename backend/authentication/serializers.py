@@ -8,10 +8,10 @@ from Friends.models import Friends
 from Posts.models import Posts
 from .models import User
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ["id","first_name", "last_name", "country", "user_since"]
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id","first_name", "last_name", "country", "user_since", "is_customer"]
 
 
 

@@ -6,4 +6,5 @@ from .models import Friends
 
 class FriendsSerializer(serializers.ModelSerializer):
     class Meta:
-        Friends=(User)
+        model = Friends
+       

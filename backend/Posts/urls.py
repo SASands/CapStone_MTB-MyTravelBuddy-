@@ -3,4 +3,6 @@ from . import views
 
 urlpatterns = [
     path('',views.get_all_posts_list),
+    path('', views.post_detail),
+    
 ]

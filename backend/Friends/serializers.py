@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from backend.authentication.models import User
+from authentication.models import AbstractUser
 from .models import Friends
 
 

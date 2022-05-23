@@ -1,17 +1,14 @@
 from dataclasses import fields
-from pyexpat import model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
-from Friends.models import Friends
-from Posts.models import Posts
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id","first_name", "last_name", "country", "user_since", "is_customer"]
+        fields = ["id","first_name", "last_name", "country", "user_since",]
 
 
 

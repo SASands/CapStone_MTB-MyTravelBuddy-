@@ -7,8 +7,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from authentication.serializers import UserSerializer
 from authentication.models import User
-from .serializers import FriendsSerializer
+from .serializers import FriendListSerializer
+from .serializers import FriendRequestSerializer
 from .models import FriendList
+from .models import FriendRequest
 # from .models import User
 # from authentication.models import models
 
@@ -17,10 +19,10 @@ from .models import FriendList
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def friends_list(request):
+def get_friends_list(request):
     if request.method == 'GET':
         friends = FriendList.objects.all()
-        serializer = FriendsSerializer(friends, many=True)
+        serializer = FriendListSerializer(friends, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -45,10 +47,18 @@ def get_user_by_id(request, pk):
 # creates new friendrequest object, saves that object
 # no need for serializer, respond with 200
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def send_friend_request(request, pk):
-#     if request.method == 'POST':
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_friend_request(request, pk):
+    print('User ', f"{request.user.id} {request.user.email} {request.user.username}")
+    if request.method == 'POST':
+        addFriend = FriendRequest.objects.all
+        serializer = FriendRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+        return Response(status=status.HTTP_201_CREATED)
+           
+
 
 
 # get pending requests  -get

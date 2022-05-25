@@ -4,8 +4,14 @@ from authentication.views import User
 from .models import FriendList, FriendRequest
 
 
-class FriendsSerializer(serializers.ModelSerializer):
+class FriendListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FriendList, FriendRequest
+        model = FriendList
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+
+
 
        

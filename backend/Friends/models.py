@@ -8,17 +8,6 @@ from authentication.models import User
 from authentication.serializers import serializers
 
 
-# Create your models here.
-   
-   
-#make a friends class and tie it into serializaers
-
-# class User(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     first_name = models.CharField(max_length=250)
-#     last_name = models.CharField(max_length=250)
-#     country = models.CharField(max_length=250)
-
 class FriendList(models.Model):  
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
     friends = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="friends")

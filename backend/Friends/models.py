@@ -13,6 +13,12 @@ from authentication.serializers import serializers
    
 #make a friends class and tie it into serializaers
 
+# class User(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     first_name = models.CharField(max_length=250)
+#     last_name = models.CharField(max_length=250)
+#     country = models.CharField(max_length=250)
+
 class FriendList(models.Model):  
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
     friends = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="friends")
@@ -52,6 +58,7 @@ class FriendRequest(models.Model):
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reciever")
     is_active = models.BooleanField(blank=True, null=False, default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return self.sender.username
     def accept(self):

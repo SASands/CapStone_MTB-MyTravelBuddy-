@@ -26,7 +26,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["username"] = user.username
         token["first_name"] = user.first_name
         token["country"] = user.country
-        token["user_since"] = user.user_since
         return token
 
 

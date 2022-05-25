@@ -16,23 +16,27 @@ from .serializers import PostsSerializer
 
 
 
-@api_view(['Get', 'POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_all_posts_list(request):
-    print(
-        'User ', f"{request.user.id} {request.user.email} {request.user.username}")    
+    if request.method == 'GET':
+        posts = Posts.objects.all()
+        serializer = PostsSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_post(request):
+    print('User', f"{request.user.id} {request.user.email} {request.user.firstname} {request.user.lastname}")    
     if request.method == 'POST':
         serializer = PostsSerializer(data=request.data)
         serializer.is_valid()
         serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    elif request.method == 'GET':
-        posts = Posts.objects.all()
-        serializer = PostsSerializer(posts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET", "DELETE", "PATCH"])
+@permission_classes([IsAuthenticated])
 def post_detail(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     if request.method == 'GET':

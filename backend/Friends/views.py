@@ -45,11 +45,11 @@ def get_user_by_id(request, pk):
 # creates new friendrequest object, saves that object
 # no need for serializer, respond with 200
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def send_friend_request(request, pk):
-    if request.method == 'POST':
-        
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def send_friend_request(request, pk):
+#     if request.method == 'POST':
+
 
 # get pending requests  -get
 # find all requests in DB with my user id as the receiver and is_active as true

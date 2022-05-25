@@ -27,32 +27,46 @@ def get_all_posts_list(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_post(request):
-    print('User', f"{request.user.id} {request.user.email} {request.user.firstname} {request.user.lastname}")    
+    print('User', f"{request.user.id} {request.user.email} {request.user.username}")    
     if request.method == 'POST':
         serializer = PostsSerializer(data=request.data)
         serializer.is_valid()
         serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-@api_view(["GET", "DELETE", "PATCH"])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def post_detail(request, pk):
+def get_post_by_id(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     if request.method == 'GET':
         serializer = PostsSerializer(post)
-        return Response(serializer.data)
-    elif request.method == 'PATCH':
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def post_patch(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+    if request.method == 'PATCH':
         serializer = PostsSerializer(post, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    elif request.method == 'DELETE':
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def post_delete(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+    if request.method == 'DELETE':       
         custom_response = {
-            "Your Post was succesfully Deleted": post.user
+            "Your Post was succesfully Deleted": post.user 
         }
         post.delete()
         return Response(custom_response, status=status.HTTP_202_ACCEPTED)
 
 
 
+
+    # if request.method == 'GET':
+    #     post = Posts.objects.filter(post_id=request.post.id)
+    #     serializer = PostsSerializer(post)
+    #     return Response(serializer.data)

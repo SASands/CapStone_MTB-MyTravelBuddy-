@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     country = models.CharField (max_length= 50)
     user_since = models.DateField(default= date.today)
-
+    friends = models.ManyToManyField("User", blank=True)
 
 
 

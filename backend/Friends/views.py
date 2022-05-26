@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -44,22 +43,41 @@ def get_user_by_id(request, pk):
 
 # send friend request  -post
 # endpoint takes in person being requested's user id
-# creates new friendrequest object, saves that object
+# creates new friendrequest object, save that object
 # no need for serializer, respond with 200
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def send_friend_request(request, pk):
-    print('User ', f"{request.user.id} {request.user.email} {request.user.username}")
+    sender = request.user.id
+    receiver = User.objects.get(id=pk)
+    print(receiver)
+    request.data['receiver'] = pk
+    request.data['sender'] = sender
+    friend_request_created = FriendRequest.objects.get_or_create(sender=sender, receiver=receiver)
     if request.method == 'POST':
-        addFriend = FriendRequest.objects.all
         serializer = FriendRequestSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-        return Response(status=status.HTTP_201_CREATED)
-           
+        serializer.is_valid(raise_exception=True)
+        serializer.save(sender=request.user)
+        if friend_request_created:
+            return Response('friend request sent', status=status.HTTP_201_CREATED)
+            
 
-
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def approve_friend_request(request, requestID):
+    request_sender = request.user.sender_id
+    request_receiver = User.objects.get(id=requestID)
+    print(request_receiver)
+    request.data['request_sender'] = request_sender
+    request.data['request_receiver'] = requestID
+    friend_request_approve = FriendRequest.objects.all(request_sender=request_sender, request_receiver=request_receiver)
+    if request.method == 'PATCH':
+        serializer = FriendListSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(request_sender=request.user)
+        if friend_request_approve:
+            return Response(status=status.HTTP_200_OK)
 
 # get pending requests  -get
 # find all requests in DB with my user id as the receiver and is_active as true
@@ -70,17 +88,11 @@ def send_friend_request(request, pk):
 # def get_pending_friend_request(request, pk):
 #     if request.method == 'GET':
 
-# approve friend request  -patch
-# take in friendrequest_id, query for that object from friendreuqest table
-# add sender into receiver's friendlist
+
+#user sends request to backend to accept friend request. 
+#youll need to add the pk/id of the user in with the request to add to the "request_reciever" (request.user.id) field in the db + the id/pk of the friend request sender
+# to fill the request_sender field in the db
 # mark request's is_active to false
-# no need for serializer, respond with 200
-
-# @api_view(['PATCH'])
-# @permission_classes([IsAuthenticated])
-# def approve_friend_request(request, pk):
-#     if request.method == 'PATCH':
-
 
 # deny friend request  -patch
 # take in friendrequest_id, query for that object
@@ -92,3 +104,13 @@ def send_friend_request(request, pk):
 # @permission_classes([IsAuthenticated])
 # def deny_friend_request(request, pk):
 #     if request.method == 'PATCH':
+
+
+
+    # print('User ', f"{request.user.id} {request.user.email} {request.user.username}")
+    # if request.method == 'POST':
+    #     addFriend = FriendRequest.objects.all
+    #     serializer = FriendRequestSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save(user=request.user)
+    #     return Response(status=status.HTTP_201_CREATED)

@@ -1,3 +1,4 @@
+from ast import Delete
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -52,8 +53,8 @@ def send_friend_request(request, pk):
     sender = request.user.id
     receiver = User.objects.get(id=pk)
     print(receiver)
-    request.data['receiver'] = pk
     request.data['sender'] = sender
+    request.data['receiver'] = pk
     friend_request_created = FriendRequest.objects.get_or_create(sender=sender, receiver=receiver)
     if request.method == 'POST':
         serializer = FriendRequestSerializer(data=request.data)
@@ -65,19 +66,23 @@ def send_friend_request(request, pk):
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
-def approve_friend_request(request, requestID):
-    request_sender = request.user.sender_id
-    request_receiver = User.objects.get(id=requestID)
+def approve_friend_request(request, pk):
+    request_sender = request.user.id
+    request_receiver = User.objects.get(id=pk)
     print(request_receiver)
     request.data['request_sender'] = request_sender
-    request.data['request_receiver'] = requestID
-    friend_request_approve = FriendRequest.objects.all(request_sender=request_sender, request_receiver=request_receiver)
+    request.data['request_receiver'] = pk
+    friend_request_approve = FriendRequest.objects.filter(sender=request_sender, receiver=request_receiver)
     if request.method == 'PATCH':
         serializer = FriendListSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(request_sender=request.user)
         if friend_request_approve:
-            return Response(status=status.HTTP_200_OK)
+            FriendRequest.is_active = False
+            return Response("You are now friends! Check out eachothers Travel Experiences!", status=status.HTTP_200_OK)
+
+
+
 
 # get pending requests  -get
 # find all requests in DB with my user id as the receiver and is_active as true

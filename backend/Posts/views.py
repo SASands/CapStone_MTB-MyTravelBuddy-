@@ -65,8 +65,3 @@ def post_delete(request, pk):
 
 
 
-
-    # if request.method == 'GET':
-    #     post = Posts.objects.filter(post_id=request.post.id)
-    #     serializer = PostsSerializer(post)
-    #     return Response(serializer.data)

@@ -1,4 +1,3 @@
-from ast import Delete
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -82,6 +81,23 @@ def approve_friend_request(request, pk):
             return Response("You are now friends! Check out eachothers Travel Experiences!", status=status.HTTP_200_OK)
 
 
+# deny friend request  -patch
+# take in friendrequest_id, query for that object
+# DONT add sender into receiver's friendlist
+# mark request's is_active to false
+# no need for serializer, respond with 200
+
+# @api_view(['PATCH'])
+# @permission_classes([IsAuthenticated])
+# def deny_friend_request(request, pk):
+#     request_sender = request.user.id
+#     request_receiver = User.objects.get(id=pk)
+#     print(request_receiver)
+#     request.data['request_sender'] = request_sender
+#     request.data['request_receiver'] = pk
+#     friend_request_deny = FriendRequest.objects.filter(sender=request_sender, receiver=request_receiver)
+
+
 
 
 # get pending requests  -get
@@ -94,21 +110,7 @@ def approve_friend_request(request, pk):
 #     if request.method == 'GET':
 
 
-#user sends request to backend to accept friend request. 
-#youll need to add the pk/id of the user in with the request to add to the "request_reciever" (request.user.id) field in the db + the id/pk of the friend request sender
-# to fill the request_sender field in the db
-# mark request's is_active to false
 
-# deny friend request  -patch
-# take in friendrequest_id, query for that object
-# DONT add sender into receiver's friendlist
-# mark request's is_active to false
-# no need for serializer, respond with 200
-
-# @api_view(['PATCH'])
-# @permission_classes([IsAuthenticated])
-# def deny_friend_request(request, pk):
-#     if request.method == 'PATCH':
 
 
 

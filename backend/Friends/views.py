@@ -10,7 +10,7 @@ from .serializers import FriendListSerializer
 from .serializers import FriendRequestSerializer
 from .models import FriendList
 from .models import FriendRequest
-# from .models import User
+from .models import User
 # from authentication.models import models
 
 

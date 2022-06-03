@@ -30,6 +30,15 @@ const RegisterPage = () => {
           />
         </label>
         <label>
+          Country:{" "}
+          <input
+            type="text"
+            name="country"
+            value={formData.country}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
           First Name:{" "}
           <input
             type="text"

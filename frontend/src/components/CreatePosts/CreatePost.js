@@ -16,8 +16,9 @@ const CreatePostForm= () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-    };
+    }   
     useEffect(() => {
+        const postTravelReview = async () => {
         try {
             let response = await axios.post("http://127.0.0.1:8000/api/posts/create/", {
                 headers: {
@@ -42,12 +43,12 @@ const CreatePostForm= () => {
         } catch(error) {
             console.log(error);
         };
-    handleSubmit();
-}, [token]);
+        postTravelReview()
+}}  , [token]);
 
     return(
     <div className="postform">
-        <h1>How was your trip {user}? Tell us all about it!</h1>
+        <h1>How was your trip {user.username}? Tell us all about it!</h1>
         <form>
             <fieldset>
                 <div className='inputfield'>

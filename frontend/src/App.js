@@ -22,8 +22,7 @@ import { useState } from "react";
 
 function App() {
 
-  const [userName, setUserName] = useState("");
-  const [message, setMessage] = useState("");
+
 
   return (
     <div>

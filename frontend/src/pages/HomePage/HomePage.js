@@ -16,7 +16,7 @@ const HomePage = () => {
       try {
         let response = await axios.get("http://127.0.0.1:8000/api/cars/", {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer" + token,
           },
         });
         setCars(response.data);
